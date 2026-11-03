@@ -3,13 +3,21 @@ const deck = document.querySelector(".deck");
 const slides = [...deck.querySelectorAll(".slide")];
 const dotsEl = document.querySelector(".dots");
 const progress = document.querySelector(".progress");
-const counter = document.querySelector(".counter");
-const prevBtn = document.getElementById("prev");
-const nextBtn = document.getElementById("next");
 const themeBtn = document.getElementById("themeBtn");
+const navLinksEl = document.querySelector(".nav-links");
+const navMenu = document.querySelector(".nav-menu");
+const homeLink = document.getElementById("homeLink");
+const lastLink = document.getElementById("lastLink");
+const navLinks = [];
 const root = document.documentElement;
 let current = 0;
 let typingRun = 0;
+
+homeLink.addEventListener("click", () => goTo(0));
+lastLink.addEventListener("click", () => goTo(slides.length - 1));
+document.addEventListener("click", (e) => {
+  if (navMenu.open && !navMenu.contains(e.target)) navMenu.open = false;
+});
 
 function positionSlideScripts() {
   slides.slice(1, -1).forEach((slide) => {
@@ -85,6 +93,18 @@ function setupGalleries() {
 
 /* ---- Navigation ---- */
 slides.forEach((slide, i) => {
+  const navLink = document.createElement("button");
+  navLink.className = "nav__link";
+  navLink.type = "button";
+  navLink.textContent = slide.dataset.title;
+  navLink.setAttribute("aria-label", `Go to slide ${i + 1}: ${slide.dataset.title}`);
+  navLink.addEventListener("click", () => {
+    goTo(i);
+    navMenu.open = false;
+  });
+  navLinks.push(navLink);
+  navLinksEl.appendChild(navLink);
+
   const dot = document.createElement("button");
   dot.setAttribute("aria-label", `Go to slide ${i + 1}: ${slide.dataset.title}`);
   dot.addEventListener("click", () => goTo(i));
@@ -99,17 +119,12 @@ function goTo(index) {
     slide.scrollTop = 0;
   });
   [...dotsEl.children].forEach((d, i) => d.classList.toggle("is-active", i === current));
+  navLinks.forEach((link, i) => link.classList.toggle("is-active", i === current));
   progress.style.width = `${((current + 1) / slides.length) * 100}%`;
-  counter.textContent = `${current + 1} / ${slides.length}`;
-  prevBtn.disabled = current === 0;
-  nextBtn.disabled = current === slides.length - 1;
   if (current === 0) animateOpeningTitle();
   else typingRun += 1;
   history.replaceState(null, "", `#${current + 1}`);
 }
-
-prevBtn.addEventListener("click", () => goTo(current - 1));
-nextBtn.addEventListener("click", () => goTo(current + 1));
 
 document.addEventListener("keydown", (e) => {
   if (["ArrowRight", "PageDown", " "].includes(e.key)) { e.preventDefault(); goTo(current + 1); }
@@ -119,10 +134,18 @@ document.addEventListener("keydown", (e) => {
 });
 
 let touchX = 0;
+let lastTouchAt = 0;
 deck.addEventListener("touchstart", (e) => (touchX = e.touches[0].clientX), { passive: true });
 deck.addEventListener("touchend", (e) => {
+  lastTouchAt = Date.now();
   const dx = e.changedTouches[0].clientX - touchX;
   if (Math.abs(dx) > 60) goTo(current + (dx < 0 ? 1 : -1));
+});
+
+deck.addEventListener("click", (e) => {
+  if (Date.now() - lastTouchAt < 500) return;
+  if (e.target.closest("button, a, summary, input, textarea, select, .gallery-controls")) return;
+  goTo(current + (e.clientX < window.innerWidth / 2 ? -1 : 1));
 });
 
 /* ---- Theme ---- */

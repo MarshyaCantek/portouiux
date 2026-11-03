@@ -6,17 +6,16 @@
     <title>Marshya Salsabilla — Interview Presentation</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
     <div class="progress"></div>
 
     <header class="header">
-      <a class="logo" href="#1"><span class="logo__dot"></span>Marshya</a>
-      <div class="header__tools">
-        <span class="counter"></span>
+      <div class="brand">
         <button class="pill pill--icon" id="themeBtn" aria-label="Toggle theme"></button>
+        <a class="logo" href="#1">Marshya</a>
       </div>
     </header>
 
@@ -107,14 +106,28 @@
                   <h4>Institut Teknologi dan Bisnis Asia Malang</h4>
                   <span>2025 — Present</span>
                 </div>
-                <p>Bachelor of Informatics Engineering.</p>
+                <p>Bachelor of Informatics Engineering</p>
               </article>
               <article class="timeline-card">
                 <div class="timeline-card__head">
-                  <h4>SMKN 1 Dianggu</h4>
+                  <h4>SMKN 1 Dlanggu</h4>
                   <span>2022 — 2025</span>
                 </div>
-                <p>Computer and Network Engineering.</p>
+                <p>Computer and Network Engineering</p>
+              </article>
+              <article class="timeline-card">
+                <div class="timeline-card__head">
+                  <h4>SMPN 1 Dlanggu</h4>
+                  <span>2019 — 2022</span>
+                </div>
+                <p>Junior High School</p>
+              </article>
+              <article class="timeline-card">
+                <div class="timeline-card__head">
+                  <h4>SDN Kertosari</h4>
+                  <span>2013 — 2019</span>
+                </div>
+                <p>Elementary School</p>
               </article>
             </div>
           </section>
@@ -310,9 +323,13 @@
     </main>
 
     <nav class="nav" aria-label="Slides">
-      <button class="nav__btn" id="prev" aria-label="Previous slide">←</button>
-      <div class="dots"></div>
-      <button class="nav__btn" id="next" aria-label="Next slide">→</button>
+      <button class="nav__edge" id="homeLink" type="button">Home</button>
+      <details class="nav-menu">
+        <summary>Sections</summary>
+        <div class="nav-links"></div>
+      </details>
+      <button class="nav__edge" id="lastLink" type="button">Last</button>
+      <div class="dots" aria-hidden="true"></div>
     </nav>
 
     <script src="script.js"></script>
